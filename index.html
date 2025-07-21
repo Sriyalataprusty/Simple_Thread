@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Threads - Q1 2025 Analytical Report</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Three.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            overflow: hidden; /* Prevent body scroll, content will scroll within main */
+        }
+        #three-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none; /* Allow clicks to pass through to elements below */
+        }
+        .page {
+            display: none; /* Hidden by default */
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        .page.active {
+            display: block; /* Show active page */
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Custom scrollbar for main content */
+        main::-webkit-scrollbar {
+            width: 8px;
+        }
+        main::-webkit-scrollbar-track {
+            background: #1a1a1a;
+            border-radius: 10px;
+        }
+        main::-webkit-scrollbar-thumb {
+            background: #009dff;
+            border-radius: 10px;
+        }
+        main::-webkit-scrollbar-thumb:hover {
+            background: #007bbd;
+        }
+    </style>
+</head>
+<body class="bg-black text-white">
+    <!-- Main application container -->
+    <div id="app" class="relative min-h-screen flex flex-col">
+        <!-- Three.js Canvas for Background -->
+        <canvas id="three-canvas"></canvas>
+
+        <!-- Content Overlay -->
+        <div class="relative z-10 flex flex-col flex-grow">
+            <!-- Navigation Bar -->
+            <nav class="bg-black bg-opacity-80 p-4 shadow-lg backdrop-blur-sm">
+                <div class="container mx-auto flex flex-wrap justify-between items-center">
+                    <a href="#" class="text-2xl font-bold text-white hover:text-[#009dff] transition-colors duration-300">Simple Threads</a>
+                    <div class="flex space-x-4 mt-4 md:mt-0">
+                        <button class="nav-button text-white hover:text-[#009dff] transition-colors duration-300 rounded-md px-3 py-2" data-page="home">Home</button>
+                        <button class="nav-button text-white hover:text-[#009dff] transition-colors duration-300 rounded-md px-3 py-2" data-page="executive-summary">Executive Summary</button>
+                        <button class="nav-button text-white hover:text-[#009dff] transition-colors duration-300 rounded-md px-3 py-2" data-page="customer-analysis">Customer Analysis</button>
+                        <button class="nav-button text-white hover:text-[#009dff] transition-colors duration-300 rounded-md px-3 py-2" data-page="sales-analysis">Sales Analysis</button>
+                        <button class="nav-button text-white hover:text-[#009dff] transition-colors duration-300 rounded-md px-3 py-2" data-page="campaign-analysis">Campaign Analysis</button>
+                        <button class="nav-button text-white hover:text-[#009dff] transition-colors duration-300 rounded-md px-3 py-2" data-page="advanced-analysis">Advanced Analysis</button>
+                        <button class="nav-button text-white hover:text-[#009dff] transition-colors duration-300 rounded-md px-3 py-2" data-page="recommendations">Recommendations</button>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main Content Area -->
+            <main class="flex-grow p-8 overflow-y-auto custom-scrollbar" style="max-height: calc(100vh - 76px);"> <!-- Adjust max-height based on nav height -->
+                <!-- Home Page -->
+                <section id="home-page" class="page active bg-black bg-opacity-70 rounded-lg p-8 shadow-xl mb-8">
+                    <h1 class="text-5xl font-bold text-[#009dff] mb-6 text-center">Simple Threads</h1>
+                    <h2 class="text-3xl font-semibold text-white mb-6 text-center">Quarter 1, 2025 Analysis Report</h2>
+                    <p class="text-lg text-white mb-4 text-center">
+                        Welcome to the comprehensive analytical report for Simple Threads, detailing our performance in Q1 2025.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+                        <div class="bg-gray-800 p-6 rounded-lg shadow-md text-center">
+                            <h3 class="text-2xl font-semibold text-[#009dff] mb-2">Total Purchase Amount</h3>
+                            <p class="text-4xl font-bold text-white">₹22,770</p>
+                            <p class="text-sm text-gray-400 mt-2">Total revenue generated in Q1 2025.</p>
+                        </div>
+                        <div class="bg-gray-800 p-6 rounded-lg shadow-md text-center">
+                            <h3 class="text-2xl font-semibold text-[#009dff] mb-2">Customer Repeat Rate</h3>
+                            <p class="text-4xl font-bold text-white">45%</p>
+                            <p class="text-sm text-gray-400 mt-2">Indicates products are meeting customer expectations.</p>
+                        </div>
+                        <div class="bg-gray-800 p-6 rounded-lg shadow-md text-center">
+                            <h3 class="text-2xl font-semibold text-[#009dff] mb-2">Campaign Revenue</h3>
+                            <p class="text-4xl font-bold text-white">₹16,570</p>
+                            <p class="text-sm text-gray-400 mt-2">Massive sales driven by discount campaigns (72.8% of total revenue).</p>
+                        </div>
+                    </div>
+                    <div class="mt-12 text-center">
+                        <p class="text-xl text-white">
+                            Navigate through the sections above to dive deeper into our performance and strategic insights.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Executive Summary Page -->
+                <section id="executive-summary-page" class="page bg-black bg-opacity-70 rounded-lg p-8 shadow-xl mb-8">
+                    <h2 class="text-4xl font-bold text-[#009dff] mb-6 text-center">Executive Summary</h2>
+                    <p class="text-lg text-white mb-4">
+                        This report presents the analysis of Simple Threads' performance during Quarter 1 of 2025. It covers key areas including customer analysis, sales analysis, campaign analysis, and advanced analytical insights.
+                    </p>
+                    <h3 class="text-2xl font-semibold text-[#009dff] mb-4">Data Cleaning and Adjustment:</h3>
+                    <ul class="list-disc list-inside text-white space-y-2">
+                        <li>One missing customer ID in the customer dataset was removed.</li>
+                        <li>Dates in purchase information, which were in text form, were converted to numerical format.</li>
+                        <li>Product prices in text format were converted to integer format.</li>
+                        <li>Incorrect city names in customer information were corrected.</li>
+                    </ul>
+                    <h3 class="text-2xl font-semibold text-[#009dff] mb-4 mt-6">Key Matrices and Their Value:</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-gray-800 rounded-lg shadow-md">
+                            <thead>
+                                <tr class="bg-gray-700 text-white">
+                                    <th class="py-3 px-4 text-left">Metric</th>
+                                    <th class="py-3 px-4 text-left">Value/Range</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-600"><td class="py-3 px-4">Unique Customers</td><td class="py-3 px-4">22</td></tr>
+                                <tr class="border-b border-gray-600"><td class="py-3 px-4">Total Purchase Amount</td><td class="py-3 px-4">₹22,770</td></tr>
+                                <tr class="border-b border-gray-600"><td class="py-3 px-4">Total No. of Customers</td><td class="py-3 px-4">40</td></tr>
+                                <tr class="border-b border-gray-600"><td class="py-3 px-4">Repeated Customers</td><td class="py-3 px-4">18</td></tr>
+                                <tr class="border-b border-gray-600"><td class="py-3 px-4">Customer Repeat Rate</td><td class="py-3 px-4">45%</td></tr>
+                                <tr class="border-b border-gray-600"><td class="py-3 px-4">Average Amount per Customer</td><td class="py-3 px-4">₹569.25</td></tr>
+                                <tr class="border-b border-gray-600"><td class="py-3 px-4">Purchase per Unique Customer</td><td class="py-3 px-4">₹1,035</td></tr>
+                                <tr class="border-b border-gray-600"><td class="py-3 px-4">Median Purchase Amount</td><td class="py-3 px-4">₹510</td></tr>
+                                <tr class="border-b border-gray-600"><td class="py-3 px-4">Discount Range</td><td class="py-3 px-4">10-20%</td></tr>
+                                <tr class="border-b border-gray-600"><td class="py-3 px-4">Age Range</td><td class="py-3 px-4">18-64</td></tr>
+                                <tr class="border-b border-gray-600"><td class="py-3 px-4">Average Age</td><td class="py-3 px-4">43</td></tr>
+                                <tr><td class="py-3 px-4">Median Age</td><td class="py-3 px-4">42</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Customer Analysis Page -->
+                <section id="customer-analysis-page" class="page bg-black bg-opacity-70 rounded-lg p-8 shadow-xl mb-8">
+                    <h2 class="text-4xl font-bold text-[#009dff] mb-6 text-center">Customer Analysis</h2>
+                    <p class="text-lg text-white mb-4">
+                        During Q1 2025, Simple Threads saw 22 unique customers out of a total of 40 customers who made purchases, resulting in a 45% repeat customer rate, indicating high customer satisfaction.
+                    </p>
+                    <h3 class="text-2xl font-semibold text-[#009dff] mb-4">Areal Distribution:</h3>
+                    <p class="text-white mb-4">
+                        Customers are distributed across various cosmopolitan towns in India, including Ahmedabad, Surat, Jaipur, Bengaluru, Hyderabad, Kolkata, Pune, Delhi, and Mumbai. While most cities are in North India, Bengaluru and Hyderabad represent the South, indicating a broad reach.
+                    </p>
+                    <h3 class="text-2xl font-semibold text-[#009dff] mb-4">Gender Distribution:</h3>
+                    <div class="flex flex-col md:flex-row items-center justify-center gap-8 mb-4">
+                        <div class="relative w-48 h-48">
+                            <div class="absolute inset-0 rounded-full" style="background: conic-gradient(#8a2be2 0% 58.2%, #9370db 58.2% 100%);"></div>
+                            <div class="absolute inset-0 flex items-center justify-center text-white text-xl font-bold">
+                                <span class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2" style="color: #9370db;">Male 41.8%</span>
+                                <span class="absolute bottom-1/4 left-1/2 -translate-x-1/2 translate-y-1/2" style="color: #8a2be2;">Female 58.2%</span>
+                            </div>
+                        </div>
+                        <p class="text-white md:w-1/2">
+                            A significant majority of our customers are female (58.2%), suggesting our products strongly appeal to this demographic. Future strategies could involve focusing more on female customers or investing in R&D for more appealing male products.
+                        </p>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-[#009dff] mb-4">Age Distribution:</h3>
+                    <p class="text-white mb-4">
+                        Most customers in their 10s and 20s are females, indicating a strong appeal to younger women. In the 40-60 age group, the male-to-female ratio is more balanced, suggesting a similar focus on both genders for these age brackets. The overall age range is 18-64, with most customers in their 20s, 30s, and 40s, pointing to a mature and urban customer base.
+                    </p>
+                    <h3 class="text-2xl font-semibold text-[#009dff] mb-4">Spending Analysis:</h3>
+                    <ul class="list-disc list-inside text-white space-y-2">
+                        <li>Average spending per customer: ₹569.25</li>
+                        <li>Average spending per unique customer: ₹1,035</li>
+                    </ul>
+                </section>
+
+                <!-- Sales Analysis Page -->
+                <section id="sales-analysis-page" class="page bg-black bg-opacity-70 rounded-lg p-8 shadow-xl mb-8">
+                    <h2 class="text-4xl font-bold text-[#009dff] mb-6 text-center">Sales Analysis</h2>
+                    <h3 class="text-2xl font-semibold text-[#009dff] mb-4">Top Performing Products:</h3>
+                    <p class="text-lg text-white mb-4">
+                        Women's apparel dominated sales in Q1 2025. The best-selling product was the **women's skirt**, with the **green skirt** being particularly popular. This was followed by **women's t-shirts**, and then men's shirts and t-shirts.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+                        <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                            <h4 class="text-xl font-bold text-white mb-2">Women's Skirt</h4>
+                            <p class="text-sm text-gray-400">Best-selling product, especially green color.</p>
+                            <img src="https://placehold.co/400x250/009dff/ffffff?text=Women's+Skirt" alt="Women's Skirt" class="w-full h-auto rounded-md mt-4">
+                        </div>
+                        <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                            <h4 class="text-xl font-bold text-white mb-2">Women's T-shirt</h4>
+                            <p class="text-sm text-gray-400">Second best-selling product.</p>
+                            <img src="https://placehold.co/400x250/009dff/ffffff?text=Women's+T-shirt" alt="Women's T-shirt" class="w-full h-auto rounded-md mt-4">
+                        </div>
+                        <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                            <h4 class="text-xl font-bold text-white mb-2">Men's Shirts & T-shirts</h4>
+                            <p class="text-sm text-gray-400">Strong performance in men's category.</p>
+                            <img src="https://placehold.co/400x250/009dff/ffffff?text=Men's+Apparel" alt="Men's Apparel" class="w-full h-auto rounded-md mt-4">
+                        </div>
+                    </div>
+                    <p class="text-lg text-white mt-6">
+                        Conversely, men's and women's half-pants were underperforming categories. It is recommended to either discontinue these products or invest more in their marketing.
+                    </p>
+                    <h3 class="text-2xl font-semibold text-[#009dff] mb-4 mt-8">Revenue Distribution:</h3>
+                    <div class="flex flex-col md:flex-row items-center justify-center gap-8 mb-4">
+                        <div class="relative w-48 h-48">
+                            <div class="absolute inset-0 rounded-full" style="background: conic-gradient(#009dff 0% 16.2%, #20b2aa 16.2% 100%);"></div>
+                            <div class="absolute inset-0 flex items-center justify-center text-white text-xl font-bold">
+                                <span class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2" style="color: #009dff;">New Customer 16.2%</span>
+                                <span class="absolute bottom-1/4 left-1/2 -translate-x-1/2 translate-y-1/2" style="color: #20b2aa;">Returning Customer 83.8%</span>
+                            </div>
+                        </div>
+                        <p class="text-white md:w-1/2">
+                            The total revenue generated in Q1 2025 was ₹22,770. A significant 83.8% of this revenue came from returning customers, while new customers contributed 16.2%. This high contribution from returning customers highlights strong product satisfaction and loyalty.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Campaign Analysis Page -->
+                <section id="campaign-analysis-page" class="page bg-black bg-opacity-70 rounded-lg p-8 shadow-xl mb-8">
+                    <h2 class="text-4xl font-bold text-[#009dff] mb-6 text-center">Campaign Analysis</h2>
+                    <h3 class="text-2xl font-semibold text-[#009dff] mb-4">Campaign Impact:</h3>
+                    <p class="text-lg text-white mb-4">
+                        Discount campaigns had a massive impact, generating approximately ₹16,570 in revenue, which is significantly higher than organic sales. The campaign contributed a substantial 72.8% of the total revenue during this period, making it highly effective.
+                    </p>
+                    <h3 class="text-2xl font-semibold text-[#009dff] mb-4">Coupon Conversion:</h3>
+                    <div class="flex flex-col md:flex-row items-center justify-center gap-8 mb-4">
+                        <div class="relative w-48 h-48">
+                            <div class="absolute inset-0 rounded-full" style="background: conic-gradient(#009dff 0% 30.6%, #20b2aa 30.6% 100%);"></div>
+                            <div class="absolute inset-0 flex items-center justify-center text-white text-xl font-bold">
+                                <span class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2" style="color: #009dff;">Purchased 30.6%</span>
+                                <span class="absolute bottom-1/4 left-1/2 -translate-x-1/2 translate-y-1/2" style="color: #20b2aa;">Ignored 69.4%</span>
+                            </div>
+                        </div>
+                        <p class="text-white md:w-1/2">
+                            Out of customers who received coupons, 11 made a purchase, leading to a 30.6% conversion rate. This rate is notably higher than the industry average, showcasing the significant impact of the campaign.
+                        </p>
+                    </div>
+                    <p class="text-lg text-white mt-4">
+                        The code "QAZWSX" was the most used, applied 3 times. "ZXCVBN", "TGBYHN", and "ASDFGH" were the most profitable discount codes, each generating ₹1,530 in revenue.
+                    </p>
+                </section>
+
+                <!-- Advanced Analysis Page -->
+                <section id="advanced-analysis-page" class="page bg-black bg-opacity-70 rounded-lg p-8 shadow-xl mb-8">
+                    <h2 class="text-4xl font-bold text-[#009dff] mb-6 text-center">Advanced Analysis</h2>
+                    <h3 class="text-2xl font-semibold text-[#009dff] mb-4">Price and Sales Amount Distribution:</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                        <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                            <h4 class="text-xl font-bold text-white mb-2">Product Price (INR)</h4>
+                            <ul class="list-disc list-inside text-white">
+                                <li>Maximum Price: ₹900</li>
+                                <li>Minimum Price: ₹300</li>
+                                <li>Average Price: ₹600</li>
+                                <li>Median Price: ₹600</li>
+                                <li>Q1 (25th percentile): ₹450</li>
+                                <li>Q3 (75th percentile): ₹800</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                            <h4 class="text-xl font-bold text-white mb-2">Sales Amount (INR)</h4>
+                            <ul class="list-disc list-inside text-white">
+                                <li>Maximum Sales Amount: ₹900</li>
+                                <li>Minimum Sales Amount: ₹255</li>
+                                <li>Average Sales Amount: ₹510</li>
+                                <li>Median Sales Amount: ₹510</li>
+                                <li>Q1 (25th percentile): ₹443.75</li>
+                                <li>Q3 (75th percentile): ₹765</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p class="text-lg text-white mt-6">
+                        The presence of low-value purchases (₹255) indicates entry-level product pricing, while the absence of high-value outliers suggests that pricing and products are well-calibrated for the market.
+                    </p>
+                    <h3 class="text-2xl font-semibold text-[#009dff] mb-4 mt-8">Correlation between Sales Amount and Discount:</h3>
+                    <p class="text-lg text-white">
+                        The correlation between sales amount and discount is a weak 0.061. This indicates that an increase in discount does not strongly lead to a significant increase in sales. This suggests that while discount campaigns drive overall revenue, the *depth* of the discount itself isn't the primary driver for higher purchase amounts.
+                    </p>
+                </section>
+
+                <!-- Recommendations Page -->
+                <section id="recommendations-page" class="page bg-black bg-opacity-70 rounded-lg p-8 shadow-xl mb-8">
+                    <h2 class="text-4xl font-bold text-[#009dff] mb-6 text-center">Recommendations & Future Outlook</h2>
+                    <p class="text-lg text-white mb-4">
+                        Based on the Q1 2025 analysis, here are the strategic recommendations for Simple Threads:
+                    </p>
+                    <ul class="list-disc list-inside text-white space-y-4">
+                        <li>
+                            <strong class="text-[#009dff]">Expand Women's Apparel Offerings:</strong> Focus on increasing the variety and availability of women's skirts and shirts, as these categories are significant revenue drivers.
+                        </li>
+                        <li>
+                            <strong class="text-[#009dff]">Optimize Discount Strategy:</strong> Shift from blanket discounts to targeted, moderated discounts applied to specific purchase amounts or above. This will leverage the success of campaigns while improving discount effectiveness.
+                        </li>
+                        <li>
+                            <strong class="text-[#009dff]">Increase Average Sale Per Customer:</strong> Implement strategies like curated product bundles and loyalty incentives to encourage higher spending per order, thereby improving profit margins.
+                        </li>
+                        <li>
+                            <strong class="text-[#009dff]">Improve Customer Data Integration:</strong> Align customer IDs with deeper demographic and behavioral analysis. Implement real-time data integration to address missing customer data from purchase information, enabling more precise targeting.
+                        </li>
+                        <li>
+                            <strong class="text-[#009dff]">Target Key Regions:</strong> Increase marketing efforts and inventory in high-performing cities like Jaipur, Bengaluru, Kolkata, and Hyderabad to capitalize on existing customer bases.
+                        </li>
+                    </ul>
+                    <div class="mt-8">
+                        <h3 class="text-2xl font-semibold text-[#009dff] mb-4">Long-Term Vision:</h3>
+                        <p class="text-lg text-white">
+                            Simple Threads aims for sustained growth by continuously adapting to market trends, innovating in sustainable fashion, and strengthening customer relationships. Our commitment to ethical practices and data-driven decisions will guide our path to becoming a leader in the apparel industry.
+                        </p>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Three.js Setup
+        let scene, camera, renderer, particles, particleGeometry, particleMaterial;
+        let mouseX = 0, mouseY = 0;
+        const windowHalfX = window.innerWidth / 2;
+        const windowHalfY = window.innerHeight / 2;
+
+        function initThreeJS() {
+            // Scene
+            scene = new THREE.Scene();
+
+            // Camera
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 5;
+
+            // Renderer
+            renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('three-canvas'), alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setClearColor(0x000000, 0); // Transparent background
+
+            // Particles
+            const numParticles = 5000;
+            particleGeometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(numParticles * 3);
+            const colors = new Float32Array(numParticles * 3);
+            const color = new THREE.Color();
+
+            for (let i = 0; i < numParticles; i++) {
+                // Position particles randomly in a cube
+                positions[i * 3] = (Math.random() * 2 - 1) * 20; // x
+                positions[i * 3 + 1] = (Math.random() * 2 - 1) * 20; // y
+                positions[i * 3 + 2] = (Math.random() * 2 - 1) * 20; // z
+
+                // Set particle color to #009dff
+                color.setHex(0x009dff);
+                colors[i * 3] = color.r;
+                colors[i * 3 + 1] = color.g;
+                colors[i * 3 + 2] = color.b;
+            }
+
+            particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            particleGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+            particleMaterial = new THREE.PointsMaterial({
+                size: 0.05,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.7,
+                blending: THREE.AdditiveBlending
+            });
+
+            particles = new THREE.Points(particleGeometry, particleMaterial);
+            scene.add(particles);
+
+            // Mouse interaction
+            document.addEventListener('mousemove', onDocumentMouseMove, false);
+            window.addEventListener('resize', onWindowResize, false);
+        }
+
+        function onDocumentMouseMove(event) {
+            mouseX = (event.clientX - windowHalfX) * 0.005;
+            mouseY = (event.clientY - windowHalfY) * 0.005;
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Rotate particles based on mouse position
+            particles.rotation.x += (mouseY - particles.rotation.x) * 0.05;
+            particles.rotation.y += (mouseX - particles.rotation.y) * 0.05;
+
+            // Animate particles (simple movement)
+            const positions = particleGeometry.attributes.position.array;
+            for (let i = 0; i < positions.length; i += 3) {
+                // Move particles slightly in Z direction
+                positions[i + 2] += 0.01;
+                // If particle moves too far, reset its position
+                if (positions[i + 2] > 10) {
+                    positions[i + 2] = -10;
+                }
+            }
+            particleGeometry.attributes.position.needsUpdate = true;
+
+            renderer.render(scene, camera);
+        }
+
+        // Page navigation logic
+        document.addEventListener('DOMContentLoaded', () => {
+            initThreeJS(); // Initialize Three.js when DOM is ready
+            animate();     // Start the Three.js animation loop
+
+            const navButtons = document.querySelectorAll('.nav-button');
+            const pages = document.querySelectorAll('.page');
+
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetPageId = button.dataset.page + '-page';
+
+                    // Hide all pages
+                    pages.forEach(page => {
+                        page.classList.remove('active');
+                    });
+
+                    // Show the target page
+                    const targetPage = document.getElementById(targetPageId);
+                    if (targetPage) {
+                        targetPage.classList.add('active');
+                        // Scroll to the top of the main content area when changing pages
+                        document.querySelector('main').scrollTop = 0;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
